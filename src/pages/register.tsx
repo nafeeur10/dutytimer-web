@@ -16,6 +16,12 @@ const Register = () => {
     const [passwordConfirmation, setPasswordConfirmation] = useState('')
     const [errors, setErrors] = useState([])
 
+    const submitForm = event => {
+        event.preventDefault()
+
+        // register({ name, email, password, password_confirmation: passwordConfirmation, setErrors })
+    }
+
     return (
         <GuestLayout>
             <AuthCard
