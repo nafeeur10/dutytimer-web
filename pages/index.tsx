@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import Link from 'next/link'
 
 const Home: NextPage = () => {
   return (
@@ -16,6 +17,12 @@ const Home: NextPage = () => {
         <h1 className={styles.title}>
           Welcome to Duty Timer
         </h1>
+
+        <Link href="/register">
+            <a className="ml-4 text-sm text-gray-700 underline">
+                Register
+            </a>
+        </Link>
       </main>
     </div>
   )
