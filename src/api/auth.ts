@@ -1,13 +1,12 @@
-import axios from "@/lib/axios";
+import axios from "../lib/axios";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
 export const useAuth = () => {
   const router = useRouter();
 
-  const register = async ({ setErrors, ...props }) => {
-    setErrors([]);
-
+  const register = async ({...props}) => {
+    console.log(props)
     axios
       .post("/register", props)
       .then(() => {
@@ -15,8 +14,10 @@ export const useAuth = () => {
       })
       .catch((error) => {
         if (error.response.status !== 422) throw error;
-
-        setErrors(error.response.data.errors);
       });
   };
+
+  return {
+    register
+}
 };

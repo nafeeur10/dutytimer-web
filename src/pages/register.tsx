@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 import Navigation from "../components/Layouts/Navigation";
+import { useAuth } from '../api/auth';
 
 const Register = () => {
+
+  const { register } = useAuth();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -72,7 +76,7 @@ const Register = () => {
                   id="password"
                   name="password"
                   type="password"
-                  value={""}
+                  value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   autoComplete="current-password"
                   required
@@ -89,7 +93,7 @@ const Register = () => {
                   id="password-confirmation"
                   name="password_confirmation"
                   type="password"
-                  value={""}
+                  value={passwordConfirmation}
                   onChange={(event) => setPasswordConfirmation(event.target.value)}
                   autoComplete="current-password"
                   required
