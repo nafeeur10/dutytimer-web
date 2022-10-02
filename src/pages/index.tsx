@@ -1,7 +1,9 @@
 import type { NextPage } from 'next'
+import { useAuth } from '../api/auth'
 import Navigation from '../components/Layouts/Navigation'
 
 const Home: NextPage = () => {
+  const { user } = useAuth({ middleware: 'guest'})
   return (
     <div className="relative overflow-hidden bg-white">
       <Navigation />

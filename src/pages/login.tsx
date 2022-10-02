@@ -5,15 +5,18 @@ import { useAuth } from '../api/auth';
 
 const Login = () => {
 
-  const { login } = useAuth();
+  const { login } = useAuth({
+    middleware: 'guest',
+    redirectIfAuthenticated: '/dashboard',
+  });
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState([]);
 
   const submitForLogin = (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault()
-      login({ email, password, setErrors })
+    event.preventDefault()
+    login({ email, password, setErrors })
   }
 
   return (

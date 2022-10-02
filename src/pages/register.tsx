@@ -5,7 +5,10 @@ import { useAuth } from '../api/auth';
 
 const Register = () => {
 
-  const { register } = useAuth();
+  const { register } = useAuth({
+    middleware: 'guest',
+    redirectIfAuthenticated: '/dashboard',
+  });
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -14,8 +17,8 @@ const Register = () => {
   const [errors, setErrors] = useState([]);
 
   const submitForRegistration = (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault()
-      register({ name, email, password, password_confirmation: passwordConfirmation, setErrors })
+    event.preventDefault()
+    register({ name, email, password, password_confirmation: passwordConfirmation, setErrors })
   }
 
   return (
