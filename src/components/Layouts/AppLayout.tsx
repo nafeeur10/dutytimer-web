@@ -1,12 +1,17 @@
 import Navigation from './Navigation'
 import { useAuth } from '../../api/auth'
+import React, { Component, ReactNode } from 'react';
 
-const AppLayout = ({ header: React., children }) => {
+interface LayoutPropsType {
+    header?: ReactNode
+    children?: ReactNode
+}
+const AppLayout = ({ header, children}: LayoutPropsType) => {
     const { user } = useAuth({ middleware: 'auth' })
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <Navigation user={user} />
+            <Navigation />
 
             {/* Page Heading */}
             <header className="bg-white shadow">

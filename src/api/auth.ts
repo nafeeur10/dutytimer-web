@@ -4,25 +4,30 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import useSWR from 'swr'
 
-export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
+interface AuthPropsType {
+  middleware?: string,
+  redirectIfAuthenticated?: string
+}
+
+export const useAuth = ({ middleware, redirectIfAuthenticated }: AuthPropsType = {}) => {
   const router = useRouter();
 
   const { data: user, error, mutate } = useSWR('/api/user', () =>
-        axios
-            .get('/api/user')
-            .then(res => res.data)
-            .catch(error => {
-                if (error.response.status !== 409) throw error
-
-                router.push('/verify-email')
-            }),
-    )
+    axios
+      .get('/api/user')
+      .then(res => res.data)
+      .catch(error => {
+        if (error.response.status !== 409) throw error
+        router.push('/login')
+      }),
+  )
 
   const register = async ({ ...props }) => {
     console.log(props)
     Axios
       .post("http://localhost:8000/api/register", props)
       .then(() => {
+        mutate()
         console.log("Successful");
       })
       .catch((error) => {
@@ -35,6 +40,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
     Axios
       .post("http://localhost:8000/api/login", props)
       .then((result) => {
+        mutate()
         console.log(result)
         console.log("Successful");
       })
@@ -43,7 +49,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
       });
   };
 
-  const logout = async ({ ...props}) => {
+  const logout = async ({ ...props }) => {
     console.log("")
   }
 
@@ -54,6 +60,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated } = {}) => {
   }, [user, error]);
 
   return {
+    user,
     register,
     login
   }
