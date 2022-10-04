@@ -1,9 +1,7 @@
 import type { NextPage } from 'next'
-import { useAuth } from '../api/auth'
 import AppLayout from '../components/Layouts/AppLayout'
 
 const Home: NextPage = () => {
-  const { user } = useAuth({ middleware: 'guest' })
   return (
     <AppLayout
       header={

@@ -43,7 +43,7 @@ const Navigation = () => {
             as="nav"
             className="hidden space-x-10 md:flex"
           ></Popover.Group>
-          {!user && <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
+          <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
             <Link href="/login">
               <a className="bg-indigo-600 px-3 py-2 rounded text-white whitespace-nowrap text-base font-medium">
                 Sign in
@@ -54,8 +54,7 @@ const Navigation = () => {
                 Sign up
               </a>
             </Link>
-          </div>}
-          {user && <p>{user}</p>}
+          </div>
         </div>
       </div>
 
@@ -91,7 +90,7 @@ const Navigation = () => {
               </div>
             </div>
             <div className="space-y-6 py-6 px-5">
-              { !user && <div>
+              <div>
                 <Link href="/register">
                   <a className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
                   Sign up
@@ -105,8 +104,7 @@ const Navigation = () => {
                     </a>
                   </Link>
                 </p>
-              </div>}
-              {user && <p>{user}</p>}
+              </div>
             </div>
           </div>
         </Popover.Panel>

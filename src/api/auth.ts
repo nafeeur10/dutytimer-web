@@ -1,6 +1,6 @@
 import Axios from 'axios'
 import axios from "../lib/axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import useSWR from 'swr'
 
@@ -11,13 +11,23 @@ interface AuthPropsType {
 
 export const useAuth = ({ middleware, redirectIfAuthenticated }: AuthPropsType = {}) => {
   const router = useRouter();
+  const [authToken, setAuthToken] = useState(null)
 
   const { data: user, error, mutate } = useSWR('/api/user', () =>
-    axios
-      .get('/api/user')
-      .then(res => res.data)
+  Axios
+      .get('http://localhost:8000/api/user', { 
+        headers: { 
+          "Authorization": `Bearer ${authToken}`,
+          'Content-Type': 'application/json' 
+        } 
+      })
+      .then((res) => {
+        let result = res.data
+        console.log(result);
+        
+      })
       .catch(error => {
-        if (error.response.status !== 409) throw error
+        if (error.response.status !== 409) throw  error
         router.push('/login')
       }),
   )
@@ -36,12 +46,11 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: AuthPropsType =
   };
 
   const login = async ({ ...props }) => {
-    console.log(props)
     Axios
       .post("http://localhost:8000/api/login", props)
       .then((result) => {
         mutate()
-        console.log(result)
+        setAuthToken(result.data.token);
         console.log("Successful");
       })
       .catch((error) => {
@@ -54,6 +63,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: AuthPropsType =
   }
 
   useEffect(() => {
+    console.log(authToken)
     if (middleware === 'guest' && redirectIfAuthenticated && user) router.push(redirectIfAuthenticated)
     // if (window.location.pathname === "/verify-email" && user?.email_verified_at) router.push(redirectIfAuthenticated)
     // if (middleware === 'auth' && error) logout()
