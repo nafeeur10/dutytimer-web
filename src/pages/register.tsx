@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 import Navigation from "../components/Layouts/Navigation";
 import { useAuth } from '../api/auth';
+import Router from "next/router";
 
 const Register = () => {
 
@@ -20,6 +21,12 @@ const Register = () => {
     event.preventDefault()
     register({ name, email, password, password_confirmation: passwordConfirmation, setErrors })
   }
+
+  useEffect( () => {
+    if(localStorage.getItem('authtoken')) {
+      Router.push('/dashboard')
+    }
+  })
 
   return (
     <div>

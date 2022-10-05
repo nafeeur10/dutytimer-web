@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
 import Navigation from "../components/Layouts/Navigation";
 import { useAuth } from '../api/auth';
+import Router from "next/router";
 
 const Login = () => {
 
@@ -18,6 +19,12 @@ const Login = () => {
     event.preventDefault()
     login({ email, password, setErrors })
   }
+
+  useEffect( () => {
+    if(localStorage.getItem('authtoken')) {
+      Router.push('/dashboard')
+    }
+  })
 
   return (
     <div>

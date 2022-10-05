@@ -11,7 +11,7 @@ interface AuthPropsType {
 
 export const useAuth = ({ middleware, redirectIfAuthenticated }: AuthPropsType = {}) => {
   const router = useRouter();
-  const [authToken, setAuthToken] = useState(null)
+  const [authToken, setAuthToken] = useState('')
 
   const { data: user, error, mutate } = useSWR('/api/user', () =>
   Axios
@@ -24,7 +24,6 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: AuthPropsType =
       .then((res) => {
         let result = res.data
         console.log(result);
-        
       })
       .catch(error => {
         if (error.response.status !== 409) throw  error
@@ -36,8 +35,10 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: AuthPropsType =
     console.log(props)
     Axios
       .post("http://localhost:8000/api/register", props)
-      .then(() => {
+      .then((result ) => {
         mutate()
+        setAuthToken(result.data.token);
+        localStorage.setItem("authtoken", authToken);
         console.log("Successful");
       })
       .catch((error) => {
@@ -51,6 +52,7 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: AuthPropsType =
       .then((result) => {
         mutate()
         setAuthToken(result.data.token);
+        localStorage.setItem("authtoken", authToken);
         console.log("Successful");
       })
       .catch((error) => {
@@ -58,15 +60,15 @@ export const useAuth = ({ middleware, redirectIfAuthenticated }: AuthPropsType =
       });
   };
 
-  const logout = async ({ ...props }) => {
-    console.log("")
+  const logout = async () => {
+    localStorage.removeItem("authtoken");
+    router.push('/login')
   }
 
   useEffect(() => {
-    console.log(authToken)
     if (middleware === 'guest' && redirectIfAuthenticated && user) router.push(redirectIfAuthenticated)
     // if (window.location.pathname === "/verify-email" && user?.email_verified_at) router.push(redirectIfAuthenticated)
-    // if (middleware === 'auth' && error) logout()
+    if (middleware === 'auth' && error) logout()
   }, [user, error]);
 
   return {

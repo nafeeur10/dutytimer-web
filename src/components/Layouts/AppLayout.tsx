@@ -7,8 +7,6 @@ interface LayoutPropsType {
     children?: ReactNode
 }
 const AppLayout = ({ header, children}: LayoutPropsType) => {
-    const { user } = useAuth({ middleware: 'auth' })
-
     return (
         <div className="min-h-screen bg-gray-100">
             <Navigation />
