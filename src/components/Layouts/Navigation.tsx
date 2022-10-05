@@ -16,20 +16,26 @@ import {
   Squares2X2Icon,
 } from "@heroicons/react/24/outline";
 
-const Navigation = () => {
+const Navigation = (user: any) => {
+  const logout = () => {
+    console.log("Logging Out....................")
+  }
   return (
     <Popover className="relative bg-white">
       <div className="mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
+        <div className="flex items-center justify-between border-b-2 border-gray-100 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
             <Link href="/">
-              <div>
-                <span className="sr-only">Your Company</span>
+              <div className="flex items-center py-1">
+                <span className="sr-only">Duty Timer</span>
                 <img
                   className="h-8 w-auto sm:h-10"
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
                   alt=""
                 />
+                <h2 className="font-semibold text-xl text-gray-800 leading-tight ml-2">
+                  Duty Timer
+                </h2>
               </div>
             </Link>
           </div>
@@ -44,16 +50,29 @@ const Navigation = () => {
             className="hidden space-x-10 md:flex"
           ></Popover.Group>
           <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
-            <Link href="/login">
-              <a className="bg-indigo-600 px-3 py-2 rounded text-white whitespace-nowrap text-base font-medium">
-                Sign in
-              </a>
-            </Link>
-            <Link href="/register">
-              <a className="ml-3 inline-flex items-center justify-center bg-indigo-600 px-4 py-2 rounded text-white whitespace-nowrap text-base font-medium">
-                Sign up
-              </a>
-            </Link>
+            {user ? (
+              <><Link href="/dashboard">
+                <a className="border-b-2 border-green-600 px-3 py-3 whitespace-nowrap text-base font-medium">
+                  Dashboard
+                </a>
+              </Link>
+              <a onClick={logout} className="bg-white px-3 py-2 rounded text-red-600 whitespace-nowrap text-base font-medium">
+                Logout
+              </a></>
+            ) : (
+              <>
+                <Link href="/login">
+                  <a className="bg-indigo-600 px-3 py-2 rounded text-white whitespace-nowrap text-base font-medium">
+                    Sign in
+                  </a>
+                </Link>
+                <Link href="/register">
+                  <a className="ml-3 inline-flex items-center justify-center bg-indigo-600 px-4 py-2 rounded text-white whitespace-nowrap text-base font-medium">
+                    Sign up
+                  </a>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -93,7 +112,7 @@ const Navigation = () => {
               <div>
                 <Link href="/register">
                   <a className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700">
-                  Sign up
+                    Sign up
                   </a>
                 </Link>
                 <p className="mt-6 text-center text-base font-medium text-gray-500">
