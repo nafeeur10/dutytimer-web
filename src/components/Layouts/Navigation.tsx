@@ -3,23 +3,15 @@ import Link from "next/link";
 import { Popover, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
-  XMarkIcon,
-  ArrowPathIcon,
-  BookmarkSquareIcon,
-  CalendarIcon,
-  ChartBarIcon,
-  CursorArrowRaysIcon,
-  LifebuoyIcon,
-  PhoneIcon,
-  PlayIcon,
-  ShieldCheckIcon,
-  Squares2X2Icon,
+  XMarkIcon
 } from "@heroicons/react/24/outline";
+import { useAuth } from "../../api/auth";
 
-const Navigation = (user: any) => {
-  const logout = () => {
-    console.log("Logging Out....................")
-  }
+const Navigation = (user) => {
+  const { logout } = useAuth({
+    middleware: 'auth',
+    redirectIfAuthenticated: '/login',
+  });
   return (
     <Popover className="relative bg-white">
       <div className="mx-auto px-4 sm:px-6">
