@@ -12,6 +12,7 @@ const Navigation = (user) => {
     middleware: 'auth',
     redirectIfAuthenticated: '/login',
   });
+  
   return (
     <Popover className="relative bg-white">
       <div className="mx-auto px-4 sm:px-6">

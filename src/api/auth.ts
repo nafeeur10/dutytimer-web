@@ -14,7 +14,7 @@ export const useAuth = ({
   redirectIfAuthenticated,
 }: AuthPropsType = {}) => {
   const router = useRouter();
-  const [authToken, setAuthToken] = useState<string | null>("");
+  const [authToken, setAuthToken] = useState("");
 
   const {
     data: user,
@@ -28,8 +28,7 @@ export const useAuth = ({
       },
     })
       .then((res) => {
-        let result = res.data;
-        console.log(result);
+        return res.data;
       })
       .catch((error) => {
         if (error.response.status !== 409) throw error;
@@ -38,12 +37,11 @@ export const useAuth = ({
   );
 
   const register = async ({ ...props }) => {
-    console.log(props);
     Axios.post("http://localhost:8000/api/register", props)
       .then((result) => {
         mutate();
         setAuthToken(result.data.token);
-        localStorage.setItem("authtoken", authToken!);
+        localStorage.setItem("authtoken", result.data.token!);
         console.log("Successful");
       })
       .catch((error) => {
@@ -56,7 +54,8 @@ export const useAuth = ({
       .then((result) => {
         mutate();
         setAuthToken(result.data.token);
-        localStorage.setItem("authtoken", authToken!);
+        console.log(authToken)
+        window.localStorage.setItem("authtoken", result.data.token!);
         console.log("Successful");
       })
       .catch((error) => {
@@ -65,24 +64,32 @@ export const useAuth = ({
   };
 
   const logout = async () => {
-    const authTokenFromLocalStorage = localStorage.getItem("authtoken");
-    await Axios.delete("http://localhost:8000/api/logout", {
-      data: {
-        user: user,
-      },
-      headers: {
-        Authorization: `Bearer ${authTokenFromLocalStorage}`,
-      },
-    }).then(() => {
-      mutate();
-      localStorage.removeItem("authtoken");
-      router.push("/login");
-    });
+    if(!error) {
+      const authTokenFromLocalStorage = localStorage.getItem("authtoken");
+      await Axios.post("http://localhost:8000/api/logout", {
+        headers: {
+          Authorization: `Bearer ${authTokenFromLocalStorage}`,
+          "Content-Type": "application/json",
+        },
+      }).then((res) => {
+        mutate();
+        console.log(res);
+        
+        // localStorage.removeItem("authtoken");
+        // router.push("/login");
+      }).catch((error) => {
+        console.log(error);
+        
+      });
+    }
   };
 
   useEffect(() => {
-    if (localStorage.getItem("authtoken") !== "") {
-      setAuthToken(localStorage.getItem("authtoken"));
+    if (localStorage.getItem("authtoken") !== null) {
+      setAuthToken(localStorage.getItem("authtoken")!);
+    }
+    else {
+      router.push('/login');
     }
     if (middleware === "guest" && redirectIfAuthenticated && user)
       router.push(redirectIfAuthenticated);
