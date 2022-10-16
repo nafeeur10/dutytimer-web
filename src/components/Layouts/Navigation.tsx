@@ -49,7 +49,7 @@ const Navigation = (user) => {
                   Dashboard
                 </a>
               </Link>
-              <a onClick={logout} className="bg-white px-3 py-2 rounded text-red-600 whitespace-nowrap text-base font-medium">
+              <a onClick={logout} className="bg-white px-3 py-2 rounded text-red-600 whitespace-nowrap text-base font-medium cursor-pointer">
                 Logout
               </a></>
             ) : (

@@ -28,9 +28,13 @@ export const useAuth = ({
       },
     })
       .then((res) => {
+        console.log("Success")
+        console.log(res)
         return res.data;
       })
       .catch((error) => {
+        console.log("Error")
+        console.log(error)
         if (error.response.status !== 409) throw error;
         router.push("/login");
       })
@@ -66,18 +70,17 @@ export const useAuth = ({
   const logout = async () => {
     if(!error) {
       const authTokenFromLocalStorage = localStorage.getItem("authtoken");
-      await Axios.post("http://localhost:8000/api/logout", {
+      await Axios.post("http://localhost:8000/api/logout", {}, {
         headers: {
-          Authorization: `Bearer ${authTokenFromLocalStorage}`,
+          "Authorization": `Bearer ${authTokenFromLocalStorage}`,
           "Content-Type": "application/json",
         },
       }).then((res) => {
         mutate();
-        console.log(res);
-        
-        // localStorage.removeItem("authtoken");
-        // router.push("/login");
+        localStorage.removeItem("authtoken");
+        router.push("/login");
       }).catch((error) => {
+        console.log("Error");
         console.log(error);
         
       });
