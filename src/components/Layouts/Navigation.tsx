@@ -7,7 +7,16 @@ import {
 } from "@heroicons/react/24/outline";
 import { useAuth } from "../../api/auth";
 
-const Navigation = (user) => {
+interface userTypes
+{
+  user: {
+    id?: Number,
+    name?: String,
+    email?: String
+  }
+}
+
+const Navigation = ({user}: userTypes) => {
   const { logout } = useAuth({
     middleware: 'auth',
     redirectIfAuthenticated: '/login',
